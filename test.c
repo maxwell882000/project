@@ -115,8 +115,10 @@ void getLogin(client_t *cli) {
 
     if (i == 0) {
       sprintf(nickname, "%s", tok);
+      printf('%s', nickname);
     } else {
       sprintf(password, "%s", tok);
+      printf('%s', password);
     }
     tok = strtok(0, s);
     i++;
@@ -165,8 +167,10 @@ void *handle_client(void *arg) {
     printf("Didn't enter the name.\n");
     leave_flag = 1;
   } else {
-    strcpy(cli->name, name);
+    strcpy(cli->request, name);
+    getLogin(cli);
   }
+
   bzero(buff_out, BUFFER_SZ);
   while (1) {
     if (leave_flag) {
@@ -175,12 +179,11 @@ void *handle_client(void *arg) {
 
     const char s[4] = ";";
     int receive = recv(cli->sockfd, buff_out, BUFFER_SZ, 0);
-    char * request = strtok(buff_out, s);
-    send_message(request , cli->uid);
-/*     if (receive > 0) {
-      if (strlen(buff_out) > 0) {
-        send_message(buff_out, cli->uid);
 
+    if (receive > 0) {
+      if (strlen(buff_out) > 0) {
+
+        send_message(buff_out, cli->uid);
         str_trim_lf(buff_out, strlen(buff_out));
         printf("%s -> %s\n", buff_out, cli->name);
       }
@@ -192,7 +195,7 @@ void *handle_client(void *arg) {
     } else {
       printf("ERROR: -1\n");
       leave_flag = 1;
-    } */
+    }
 
     bzero(buff_out, BUFFER_SZ);
   }
