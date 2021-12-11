@@ -38,7 +38,7 @@ struct collect_score_result collect_score(int game_id) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -82,7 +82,7 @@ void game_change_status(int game_id, char status[20]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -106,7 +106,7 @@ int game_create(int user_id, char password[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -151,7 +151,7 @@ struct game_display_result game_display(char status[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", "123Aa123_",
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -194,7 +194,7 @@ int get_sleep_count(int game_id, int key_id) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user",'123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -228,7 +228,7 @@ int *get_user_id_from_group(int game_id) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -265,7 +265,7 @@ void increase_score(int id, int increment) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -289,7 +289,7 @@ bool increment_sleep_count(int game_id, int user_id, int key_id) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user",'123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -318,7 +318,7 @@ bool join_game(int game_id, int user_id, char password[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -359,7 +359,7 @@ bool password_check_game(int game_id, int user_id, char password[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -387,7 +387,8 @@ bool password_check_game(int game_id, int user_id, char password[50]) {
   return true;
 }
 
- char* password_check_nickname(char userName[50], char password[50]) {
+
+char *password_check_nickname(char userName[50], char password[50]) {
 
   char sqlQuery[1000];
 
@@ -398,8 +399,8 @@ bool password_check_game(int game_id, int user_id, char password[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
-                         "dontdisturb", 0, NULL, 0) == NULL) {
+  if (mysql_real_connect(con, "localhost", "user", "123Aa123_", "dontdisturb",
+                         0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
 
@@ -431,7 +432,7 @@ int get_user_id(char nickname[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -463,7 +464,7 @@ int sleepone_create(int key_id, int user_id, int game_id) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }
@@ -491,7 +492,7 @@ int user_create(char userName[50], char password[50]) {
     exit(1);
   }
 
-  if (mysql_real_connect(con, "localhost", "root", NULL,
+  if (mysql_real_connect(con, "localhost", "user", '123Aa123_',
                          "dontdisturb", 0, NULL, 0) == NULL) {
     finish_with_error(con);
   }

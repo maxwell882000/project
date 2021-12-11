@@ -22,7 +22,8 @@ typedef struct {
   struct sockaddr_in address;
   int sockfd;
   int uid;
-  char name[32];
+  char name[60];
+  char request[90];
 } client_t;
 
 client_t *clients[MAX_CLIENTS];
@@ -87,7 +88,7 @@ void send_message(char *s, int uid) {
 
   for (int i = 0; i < MAX_CLIENTS; ++i) {
     if (clients[i]) {
-      if (clients[i]->uid != uid) {
+      if (clients[i]->uid == uid) {
         if (write(clients[i]->sockfd, s, strlen(s)) < 0) {
           perror("ERROR: write to descriptor failed");
           break;
@@ -97,6 +98,56 @@ void send_message(char *s, int uid) {
   }
 
   pthread_mutex_unlock(&clients_mutex);
+}
+
+void getLogin(client_t *cli) {
+  char nickname[50];
+  char password[50];
+
+  // Declaration of delimeter
+  const char s[4] = ";";
+  char *tok;
+  int i = 0;
+  tok = strtok(cli->name, s);
+
+  // Checks for delimeter
+  while (tok != 0) {
+
+    if (i == 0) {
+      sprintf(nickname, "%s", tok);
+    } else {
+      sprintf(password, "%s", tok);
+    }
+    tok = strtok(0, s);
+    i++;
+  }
+  char *super_return = password_check_nickname(nickname, password);
+  send_message(super_return, cli->uid);
+}
+
+void getRegister(client_t *cli) {
+  char nickname[50];
+  char password[50];
+
+  // Declaration of delimeter
+  const char s[4] = ";";
+  char *tok;
+  int i = 0;
+  tok = strtok(cli->name, s);
+
+  // Checks for delimeter
+  while (tok != 0) {
+
+    if (i == 0) {
+      sprintf(nickname, "%s", tok);
+    } else {
+      sprintf(password, "%s", tok);
+    }
+    tok = strtok(0, s);
+    i++;
+  }
+  char *super_return = user_create(nickname, password);
+  send_message(super_return, cli->uid);
 }
 
 /* Handle all communication with the client */
@@ -114,42 +165,19 @@ void *handle_client(void *arg) {
     printf("Didn't enter the name.\n");
     leave_flag = 1;
   } else {
-    char nickname[50];
-    char password[50];
     strcpy(cli->name, name);
-    // Declaration of delimeter
-    const char s[4] = "-";
-    char *tok;
-    int i = 0;
-    tok = strtok(name, s);
-
-    // Checks for delimeter
-    while (tok != 0) {
-
-      if (i == 0) {
-        sprintf(nickname, "%s ", tok);
-      } else {
-        sprintf(password, "%s ", tok);
-      }
-      tok = strtok(0, s);
-      i++;
-    }
-    int ch = password_check_nickname(nickname, password);
-    sprintf(buff_out, "%s has joined\n", cli->name);
-    
-    printf("%s" , buff_out);
-    write(cli->sockfd, buff_out, strlen(buff_out));
   }
-
   bzero(buff_out, BUFFER_SZ);
-
   while (1) {
     if (leave_flag) {
       break;
     }
 
+    const char s[4] = ";";
     int receive = recv(cli->sockfd, buff_out, BUFFER_SZ, 0);
-    if (receive > 0) {
+    char * request = strtok(buff_out, s);
+    send_message(request , cli->uid);
+/*     if (receive > 0) {
       if (strlen(buff_out) > 0) {
         send_message(buff_out, cli->uid);
 
@@ -164,7 +192,7 @@ void *handle_client(void *arg) {
     } else {
       printf("ERROR: -1\n");
       leave_flag = 1;
-    }
+    } */
 
     bzero(buff_out, BUFFER_SZ);
   }
